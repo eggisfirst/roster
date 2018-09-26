@@ -1,74 +1,119 @@
-<!-- <keep-alive> -->
 <template>
   <div class="home">
-    <h1>{{homeTit}}</h1>
-    <p>{{homeText}}</p>
-    <router-link to="/child">Go to Child</router-link>
-    <button @click="goToChild" type="button">Go to Child</button>
-    <ul>
-      <li v-for="(item, index) in homeArr" :key="index">{{item}}</li>
-    </ul>
-    <ul>
-      <li v-for="(item, index) in homeArrFilter" :key="index">{{item}}</li>
-    </ul>
-    {{test}}
+    <div class="wrapper">
+      <div class="title">
+        <img src="../assets/imgs/flower1.png" alt="">
+        <span>花名册</span>
+        <img src="../assets/imgs/flower2.png" alt="">
+      </div>
+      <div class="peopelNum">
+        <p>目前全国慕思持有上岗证人员共有</p>
+        <span>{{peopleNum}}</span>名
+      </div>
+      <div class="areaPeopleNum">
+        <p>各省持证人数分布</p>
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
-<!-- </keep-alive> -->
 
 <script>
-// import echarts from 'echarts'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
-Vue.use(VueRouter)
-Vue.use(Vuex)
-export default {
-  name: 'home',
-  data () {
-    return {
-      height: document.documentElement.clientHeight
-    }
-  },
 
-  computed: {
-    test() {
-      console.log(this.$store)
-    },
-    ...mapState({
-      homeTit: state => state.home.homeTit,
-      homeText: state => state.home.homeText,
-      homeArr: state => state.home.homeArr
-    }),
-    ...mapGetters([
-      'homeArrFilter'
-    ])
-  },
-  methods:{
-    ...mapMutations([
-      'setHomeTit',
-      'setHomeText',
-      'setHomeArr'
-    ]),
-    goToChild() {
-      this.$router.push({ path: '/child' })
+
+export default {
+  data(){
+    return{
+      peopleNum:4353
     }
-  },
-  mounted(){
-    console.log(mapState)
-    this.setHomeArr([1, 2, 3])
-    this.setHomeTit('首页标题')
-    this.setHomeText('123木头人')
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.home{
+<style lang="scss" scoped>
+@font-face {
+  font-family: 'PINGFANGBOLD';
+  src: url('../assets/font/PingFang Bold.ttf');
+}
+@font-face {
+  font-family: 'PINGFANG';
+  src: url('../assets/font/PingFang Medium.ttf');
+}
+.wrapper{
   width: 100vw;
   height: 100vh;
-  background: #ff0000;
+  padding: 4.94vw 4vw ;
+  box-sizing: border-box;
+  font-family: 'PINGFANG';
+  .title{
+    margin: 0 auto;
+    width: 30.66vw;
+    margin-bottom: 4.94vw;
+    span{
+      font-size: 6.4vw;
+      line-height: 9.33vw;
+      color: #484a5f;
+      font-family: 'PINGFANGBOLD';
+    }
+    img{
+      width: 4vw;
+      vertical-align: text-top
+    }
+  }
+  .peopelNum{
+    width: 92vw;
+    height: 36vw;
+    text-align: center;
+    background: url(../assets/imgs/bg.png) no-repeat center;
+    background-size: 100%;
+    font-size: 4.26vw;
+    color: #484a5f;
+    background-color: #fefefe;
+    border-style: solid;
+    border-width: 1px;
+    border-image-source: linear-gradient(0, #fafbfb 92%, #ffffff 100%);
+    border-image-slice: 1;
+    border-radius: 2vw;
+    p{
+      font-size: 3.73vw;
+      line-height: 16vw;
+      letter-spacing: 1px;
+      color: #b8b9c1;
+    }
+    span{
+      font-size: 16vw;
+      line-height: 16vw;
+      letter-spacing: .4vw;
+      color: #484a5f;
+      font-family: 'PINGFANGBOLD';
+    }
+  }
+  .areaPeopleNum{
+    p{
+      font-size: 4vw;
+      line-height: 16vw;
+      letter-spacing: 1px;
+      color: #a9adb7;
+      font-family: 'PINGFANGBOLD';
+    }
+    ul{
+      li{
+        width: 21.3vw;
+        height: 21.3vw;
+        background-color: #fbfcfd;
+	      box-shadow: 0px .53vw .53vw 0px rgba(227, 227, 227, 0.2);
+        border: solid 1px #f5f8fb;
+        border-radius: 2vw;
+      }
+
+    }
+    
+  }
 }
 </style>
- 
+
+

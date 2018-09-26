@@ -7,10 +7,16 @@ export var router = new VueRouter({
   routes: [{
     path: '/',
     name: 'Home',
-    component: resolve => require(['../pages/home'], resolve)
-  }, {
-    path: '/child',
-    name: 'Child',
-    component: resolve => require(['../pages/child'], resolve)
+    component: resolve => require(['../pages/home'], resolve),
+    meta:{
+      title:'慕思商学院花名册'
+    }
   }]
+})
+
+router.beforeEach(function(to,from,next){
+  if(to.meta.title){
+    document.title = to.meta.title
+  }
+  next()
 })
