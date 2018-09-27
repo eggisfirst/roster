@@ -12,8 +12,12 @@
       </div>
       <div class="areaPeopleNum">
         <p>各省持证人数分布</p>
-        <ul>
-          <li></li>
+        <ul class="clearfix">         
+          <li v-for="(peopleForms,index) in item " :key="index"
+          @click="linkToProvince(index)">
+            <div class="areaPeopleNumber">{{p[index].areaPeopleNumber}}</div>
+            <div class="province">{{p[index].province}}</div>    
+          </li>
         </ul>
       </div>
     </div>
@@ -23,13 +27,73 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import axios from 'axios'
 
 export default {
   data(){
     return{
-      peopleNum:4353
+      peopleNum:4353,
+      item:6,
+      p:'',
+      peopleForms:[
+        {
+          areaPeopleNumber:1663,province:'广东'
+        },{
+          areaPeopleNumber:554,province:'广西'
+        },{
+          areaPeopleNumber:444,province:'湖南'
+        },{
+          areaPeopleNumber:333,province:'湖北'
+        },{
+          areaPeopleNumber:1663,province:'广东'
+        },{
+          areaPeopleNumber:554,province:'广西'
+        }
+      ]
     }
+  },
+  methods: {
+    getPeopelNum:() => {
+      const url = ''  //接口
+      axios({
+        method:'post',
+        url:url,
+        params:{
+
+        }//接口参数
+      }).then((res) => {
+        if(res.data){
+          console.log(res.data)
+        }
+      })
+    },
+    getAreaPeopleNum:() => {
+      const url = ''
+      axios({
+        method:'post',
+        url:url,
+        params:{
+
+        }
+      }).then((res) => {
+        if(res.data){
+          console.log(res.data)
+        }
+      })
+    },
+    //点击哪个省份，通过路由传到下个页面。
+    linkToProvince:function(index){
+      // console.log(this.p[index].province)
+      let pro = this.p[index].province
+      console.log(pro)
+      this.$emit('Province',pro)
+      this.$router.push({path:'/province'})
+    }
+  },
+  created(){
+    // this.getPeopelNum()
+    // this.getAreaPeopleNum()
+    this.p = this.peopleForms
   }
 }
 </script>
@@ -49,6 +113,7 @@ export default {
   padding: 4.94vw 4vw ;
   box-sizing: border-box;
   font-family: 'PINGFANG';
+  background: #edf3f8;
   .title{
     margin: 0 auto;
     width: 30.66vw;
@@ -66,27 +131,25 @@ export default {
   }
   .peopelNum{
     width: 92vw;
-    height: 36vw;
+    height: 34vw;
     text-align: center;
     background: url(../assets/imgs/bg.png) no-repeat center;
     background-size: 100%;
     font-size: 4.26vw;
     color: #484a5f;
-    background-color: #fefefe;
-    border-style: solid;
     border-width: 1px;
     border-image-source: linear-gradient(0, #fafbfb 92%, #ffffff 100%);
     border-image-slice: 1;
     border-radius: 2vw;
     p{
       font-size: 3.73vw;
-      line-height: 16vw;
+      line-height: 15vw;
       letter-spacing: 1px;
       color: #b8b9c1;
     }
     span{
       font-size: 16vw;
-      line-height: 16vw;
+      line-height: 14vw;
       letter-spacing: .4vw;
       color: #484a5f;
       font-family: 'PINGFANGBOLD';
@@ -101,6 +164,7 @@ export default {
       font-family: 'PINGFANGBOLD';
     }
     ul{
+      
       li{
         width: 21.3vw;
         height: 21.3vw;
@@ -108,6 +172,25 @@ export default {
 	      box-shadow: 0px .53vw .53vw 0px rgba(227, 227, 227, 0.2);
         border: solid 1px #f5f8fb;
         border-radius: 2vw;
+        float: left;
+        margin-right: 1.56vw;
+        margin-bottom: 1.56vw;
+        .areaPeopleNumber{
+          font-size: 5.6vw;
+          line-height: 6vw;
+          color: #7498fb;
+          font-family: 'PINGFANGBOLD';
+          text-align: center;
+          margin-top: 3.86vw;
+        }
+        .province{
+          font-size: 4.8vw;
+          color: #bfc1c8;
+          text-align: center;
+        }
+      }
+      li:nth-child(4n){
+        margin-right: 0
       }
 
     }

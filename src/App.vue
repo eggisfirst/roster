@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-on:Province = 'getProvince' :province='province'></router-view>
   </div>
 </template>
 
@@ -11,7 +11,20 @@ import store from './store'
 
 export default{
   name: 'app',
-  store
+  store,
+  data(){
+    return{
+      province:''
+    }
+  },
+ 
+  methods:{
+    getProvince(data){
+      // console.log(data)
+      this.province = data
+      
+    }
+  }
 }
 </script>
 
