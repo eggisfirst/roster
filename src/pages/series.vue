@@ -7,12 +7,12 @@
       </div>
     </div>
       <ul>
-        <li v-for="(person,index) in item" :key="index" @click="click(index)"
+        <li v-for="(item,index) in person" :key="index" @click="click(index)"
         :class="{active:currentTab === index} ">
           <div class="personList clearfix">
             <div class="person clearfix">
-              <img :src="`../static/images/man${p[index].sex}.png`" alt="">
-              <div class="name">{{p[index].name}}</div>
+              <img :src="`../static/images/man${item.sex}.png`" alt="">
+              <div class="name">{{item.name}}</div>
             </div>
             <div class="takepartin clearfix">
               <img src="../assets/imgs/complete.png" alt="">
@@ -35,9 +35,7 @@ import axios from 'axios'
 export default {
   data(){
     return{
-      item:17,
       currentTab:'',
-      p:'',
       person:[
         {sex:1,name:'陈一'},
         {sex:1,name:'张三'},
@@ -63,13 +61,12 @@ export default {
   created(){
     console.log(this.province,this.city,this.area,this.series)
     document.title = this.series + '系列花名册'
-    this.p = this.person
   },
   methods:{
     click:function(index){
       this.currentTab = index
       let personName = this.person[index].name
-      // console.log(name)
+      console.log(personName)
       //跳转下个页面，把当前点击的名字传下去。
       this.$emit('personName',personName)
       this.$router.push({path:'/personalDetails'})

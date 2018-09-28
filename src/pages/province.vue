@@ -3,25 +3,25 @@
     <ul class="myCity">
        <div class="city">市</div>
        <div class="option">请选择</div>
-      <li v-for="(p,index) in cityItem" :key="index"
+      <li v-for="(item1, index) in citys" :key="`${index}11`"
        @click="cityClick(index)" :class="{active1:cityTab === index}">
-       {{provinceCity[index].city}}
+       {{item1}}
        </li>
     </ul>
      <ul class="myArea" :style="{display:displayArea}">
        <div class="city">地区</div>
        <div class="option">请选择</div>
-      <li v-for="(c,index) in areaItem" :key="index"
+      <li v-for="(item2,index) in areas" :key="`${index}22`"
        @click="areaClick(index)" :class="{active2:areaTab === index}">
-       {{cityArea[index].area}}
+       {{item2}}
        </li>
     </ul>
     <ul class="mySeries" :style="{display:displaySeries}">
        <div class="city">系列</div>
        <div class="option">请选择</div>
-      <li v-for="(s,index) in seriesItem" :key="index"
+      <li v-for="(item3,index) in allseries" :key="`${index}33`"
        @click="seriesClick(index)" :class="{active3:seriesTab === index}">
-       {{areaSeries[index].series}}
+       {{item3}}
        </li>
     </ul>
   </div>
@@ -35,36 +35,18 @@ import axios from 'axios'
 export default {
   data(){
     return{
-     cityItem:8,
-     areaItem:5,
-     seriesItem:5,
-     provinceCity:'',
-     p:[
-      {city:'东莞市'},{city:'广州市'},{city:'深圳市'},{city:'珠海市'},
-      {city:'汕头市'},{city:'韶关市'},{city:'肇庆市'},{city:'湛江市'}
-    ],
-    cityTab:'',
-    areaTab:'',
-    seriesTab:'',
-    cityArea:'',
-    c:[
-      {area:'南城区'},{area:'厚街区'},{area:'东城区'},{area:'万江区'},
-      {area:'虎门镇'}
-    ],
-    displayArea:'none',
-    displaySeries:'none',
-    areaSeries:'',
-    s:[
-      {series:'3D'},{series:'凯奇'},{series:'歌蒂亚'},{series:'0769'},{series:'V6'}
-    ]
-
+      citys:['东莞市', '广州市', '深圳市', '珠海市', '汕头市', '韶关市', '肇庆市', '湛江市'],
+      areas:['南城区' ,'厚街区' ,'东城区' ,'万江区' ,'虎门镇'],
+      allseries:['3D', '凯奇', '歌蒂亚', '0769', 'V6'],
+      cityTab:'',
+      areaTab:'',
+      seriesTab:'',
+      displayArea:'none',
+      displaySeries:'none'
     }
   },
   props:['province'],
   created(){
-    this.provinceCity = this.p
-    this.cityArea = this.c
-    this.areaSeries = this.s
     this.getCity()
     document.title = this.province + '省'
     // console.log('this',this.province)
@@ -73,7 +55,7 @@ export default {
     //根据城市获得地区
     cityClick:function(index){
     //  console.log(this.p[index].city)
-     let currentCity = this.p[index].city
+     let currentCity = this.citys[index]
      console.log(currentCity) 
      this.cityTab = index  //获取当前索引，添加active样式。
      this.getArea()
@@ -82,16 +64,16 @@ export default {
     },
     //根据地区获得系列
     areaClick:function(index){
-      console.log(this.c[index].area)
+      console.log(this.areas[index])
       this.areaTab = index
       this.displaySeries = 'block'
-      let currentArea = this.c[index].area
+      let currentArea = this.areas[index]
       this.getSeries()
       this.$emit('Area',currentArea)
     },
     seriesClick:function(index){
-      console.log(this.s[index].series)
-      let currentSeries = this.s[index].series
+      console.log(this.allseries[index])
+      let currentSeries = this.allseries[index]
       this.seriesTab = index
       this.$emit('Series',currentSeries)
       this.$router.push({path:'/series'})
@@ -114,10 +96,12 @@ export default {
     },
     getArea:function(){
       // let url = ''
+      // let province = this.province 
       // axios({
       //   method:'post',
       //   url:url,
       //   params:{
+            //  province,
       //     city:currentCity
       //   }
       // }).then((res) => {
@@ -128,10 +112,13 @@ export default {
     },
     getSeries:function(){
       // let url = ''
+      // let province = this.province 
       // axios({
       //   method:'post',
       //   url:url,
       //   params:{
+            //  province,
+            //  city:currentCity,
       //     area:currentArea
       //   }
       // }).then((res) => {

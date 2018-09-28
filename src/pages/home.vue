@@ -13,10 +13,10 @@
       <div class="areaPeopleNum">
         <p>各省持证人数分布</p>
         <ul class="clearfix">         
-          <li v-for="(peopleForms,index) in item " :key="index"
+          <li v-for="(item,index) in peopleForms " :key="index"
           @click="linkToProvince(index)">
-            <div class="areaPeopleNumber">{{p[index].areaPeopleNumber}}</div>
-            <div class="province">{{p[index].province}}</div>    
+            <div class="areaPeopleNumber">{{item.areaPeopleNumber}}</div>
+            <div class="province">{{item.province}}</div>    
           </li>
         </ul>
       </div>
@@ -33,8 +33,6 @@ export default {
   data(){
     return{
       peopleNum:4353,
-      item:6,
-      p:'',
       peopleForms:[
         {
           areaPeopleNumber:1663,province:'广东'
@@ -67,33 +65,32 @@ export default {
         }
       })
     },
-    getAreaPeopleNum:() => {
-      const url = ''
-      axios({
-        method:'post',
-        url:url,
-        params:{
+    // getAreaPeopleNum:() => {
+    //   const url = ''
+    //   axios({
+    //     method:'post',
+    //     url:url,
+    //     params:{
 
-        }
-      }).then((res) => {
-        if(res.data){
-          console.log(res.data)
-        }
-      })
-    },
+    //     }
+    //   }).then((res) => {
+    //     if(res.data){
+    //       console.log(res.data)
+    //     }
+    //   })
+    // },
     //点击哪个省份，通过路由传到下个页面。
     linkToProvince:function(index){
-      // console.log(this.p[index].province)
-      let pro = this.p[index].province
-      console.log(pro)
-      this.$emit('Province',pro)
+      let myProvince = this.peopleForms[index].province
+      console.log(myProvince)
+      this.$emit('Province',myProvince)
       this.$router.push({path:'/province'})
     }
   },
   created(){
     // this.getPeopelNum()
     // this.getAreaPeopleNum()
-    this.p = this.peopleForms
+   
   }
 }
 </script>

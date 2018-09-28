@@ -2,10 +2,10 @@
   <div class="details">
     <div class="name">{{personName}}</div>
     <ul>
-      <li v-for="(i,index) in item" :key="index">
+      <li v-for="(item,index) in personDetails" :key="index">
         <div class="line">
-          <div class="left"><span>{{p[index].key1}}</span></div>
-          <div class="right">{{p[index].value1}}</div>
+          <div class="left"><span>{{item.topic}}</span></div>
+          <div class="right">{{item.message}}</div>
         </div>
       </li>
     </ul>
@@ -23,24 +23,22 @@ import axios from 'axios'
 export default {
   data(){
     return{
-      item:15,
-      p:'',
-      person:[
-        {key1:'性别',value1:'女'},
-        {key1:'手机号码',value1:'150139000000'},
-        {key1:'身份证号码',value1:'34452811123214214'},
-        {key1:'婚姻状况',value1:'未婚'},
-        {key1:'受教育程度',value1:'大专'},
-        {key1:'入职日期',value1:'2017年5月23日'},
-        {key1:'职位',value1:'顾问'},
-        {key1:'城市',value1:'东莞'},
-        {key1:'县市',value1:'厚街'},
-        {key1:'经销商姓名',value1:'刘老板'},
-        {key1:'系列',value1:'0769'},
-        {key1:'您所在城市培训对接人',value1:'张大千'},
-        {key1:'培训对接人联系号码',value1:'123445678'},
-        {key1:'是否参加过总部慕思商学院十天以上的培训',value1:'是'},
-        {key1:'您的年龄层',value1:'18-23岁'}
+      personDetails:[
+        {topic:'性别',message:'女'},
+        {topic:'手机号码',message:'150139000000'},
+        {topic:'身份证号码',message:'34452811123214214'},
+        {topic:'婚姻状况',message:'未婚'},
+        {topic:'受教育程度',message:'大专'},
+        {topic:'入职日期',message:'2017年5月23日'},
+        {topic:'职位',message:'顾问'},
+        {topic:'城市',message:'东莞'},
+        {topic:'县市',message:'厚街'},
+        {topic:'经销商姓名',message:'刘老板'},
+        {topic:'系列',message:'0769'},
+        {topic:'您所在城市培训对接人',message:'张大千'},
+        {topic:'培训对接人联系号码',message:'123445678'},
+        {topic:'是否参加过总部慕思商学院十天以上的培训',message:'是'},
+        {topic:'您的年龄层',message:'18-23岁'}
         
       ]
     }
@@ -48,7 +46,23 @@ export default {
   props:['personName'],
   created(){
     console.log(this.personName)
-    this.p = this.person
+    this.getDetails()
+  },
+  methods:{
+    getDetails:() => {
+      // let url = ''
+      // axios({
+      //   method:'post',
+      //   url:url,
+      //   params:{
+
+      //   }
+      // }).then((res) => {
+      //   if(res.data){
+      //     console.log(res.data)
+      //   }
+      // })
+    }
   }
 }
 </script>
