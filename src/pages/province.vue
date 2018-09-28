@@ -66,6 +66,7 @@ export default {
     this.cityArea = this.c
     this.areaSeries = this.s
     this.getCity()
+    document.title = this.province + '省'
     // console.log('this',this.province)
   },
   methods:{
@@ -77,6 +78,7 @@ export default {
      this.cityTab = index  //获取当前索引，添加active样式。
      this.getArea()
      this.displayArea = 'block'
+     this.$emit('City',currentCity)
     },
     //根据地区获得系列
     areaClick:function(index){
@@ -85,10 +87,14 @@ export default {
       this.displaySeries = 'block'
       let currentArea = this.c[index].area
       this.getSeries()
+      this.$emit('Area',currentArea)
     },
     seriesClick:function(index){
       console.log(this.s[index].series)
+      let currentSeries = this.s[index].series
       this.seriesTab = index
+      this.$emit('Series',currentSeries)
+      this.$router.push({path:'/series'})
     },
     //根据省份获得城市
     getCity:function(){

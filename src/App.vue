@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view v-on:Province = 'getProvince' :province='province'></router-view>
+    <router-view v-on:Province = 'getProvince' :province='province'
+     v-on:City= "getCity"  :city ='city'
+     v-on:Area= 'getArea'  :area='area'
+     v-on:Series= 'getSeries' :series ='series'>
+    </router-view>
   </div>
 </template>
 
@@ -14,7 +18,10 @@ export default{
   store,
   data(){
     return{
-      province:''
+      province:'',
+      city:'',
+      area:'',
+      series:''
     }
   },
  
@@ -22,7 +29,15 @@ export default{
     getProvince(data){
       // console.log(data)
       this.province = data
-      
+    },
+    getCity(data){
+      this.city = data
+    },
+    getArea(data){
+      this.area = data
+    },
+    getSeries(data){
+      this.series = data
     }
   }
 }

@@ -14,10 +14,11 @@ export var router = new VueRouter({
   },{
     path: '/province',
     name: 'province',
-    component: resolve => require(['../pages/province'], resolve),
-    meta:{
-      title:'广东省'
-    }
+    component: resolve => require(['../pages/province'], resolve)
+  },{
+    path: '/series',
+    name: 'series',
+    component: resolve => require(['../pages/series'], resolve)
   }
 ]
 })
