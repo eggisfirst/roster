@@ -3,7 +3,8 @@
     <router-view v-on:Province = 'getProvince' :province='province'
      v-on:City= "getCity"  :city ='city'
      v-on:Area= 'getArea'  :area='area'
-     v-on:Series= 'getSeries' :series ='series'>
+     v-on:Series= 'getSeries' :series ='series'
+     v-on:personName= 'getName' :personName ='personName'>
     </router-view>
   </div>
 </template>
@@ -21,7 +22,8 @@ export default{
       province:'',
       city:'',
       area:'',
-      series:''
+      series:'',
+      personName:''
     }
   },
  
@@ -38,6 +40,9 @@ export default{
     },
     getSeries(data){
       this.series = data
+    },
+    getName(data){
+      this.personName = data
     }
   }
 }

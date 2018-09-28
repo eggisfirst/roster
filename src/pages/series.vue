@@ -21,7 +21,9 @@
           </div>
         </li>
       </ul>
-      <div class="home"></div>
+      <router-link to="/">
+        <div class="home"></div>
+      </router-link>
   </div>
 </template>
 
@@ -66,6 +68,11 @@ export default {
   methods:{
     click:function(index){
       this.currentTab = index
+      let personName = this.person[index].name
+      // console.log(name)
+      //跳转下个页面，把当前点击的名字传下去。
+      this.$emit('personName',personName)
+      this.$router.push({path:'/personalDetails'})
     },
     getPreson:() => {
       let url = ''
@@ -88,6 +95,9 @@ export default {
           //返回数据  总人数 性别（男返回1，女返回2） 名字（排序按姓名首字母排）
         }
       })
+    },
+    clickHome:() => {
+      console.log('home')
     }
   }
 }
@@ -101,6 +111,9 @@ export default {
 @font-face {
   font-family: 'PINGFANGBOLD';
   src: url('../assets/font/PingFang Bold.ttf');
+}
+.series{
+  position: relative;
 }
 .banner{
   width: 100vw;
@@ -176,5 +189,14 @@ ul{
     width: 100%;
     background: #dfe3e6;
   }
+}
+.home{
+  width: 11.66vw;
+  height: 11.66vw;
+  position: fixed;
+  bottom: 5.33vw;
+  left: 44.66vw;
+  background: url(../assets/imgs/home.png) no-repeat center;
+  background-size: 100%;
 }
 </style>

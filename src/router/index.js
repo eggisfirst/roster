@@ -19,6 +19,13 @@ export var router = new VueRouter({
     path: '/series',
     name: 'series',
     component: resolve => require(['../pages/series'], resolve)
+  },{
+    path: '/personalDetails',
+    name: 'personalDetails',
+    component: resolve => require(['../pages/personalDetails'], resolve),
+    meta:{
+      title:'个人信息'
+    }
   }
 ]
 })
