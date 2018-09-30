@@ -7,7 +7,15 @@
       </div>
     </div>
       <ul>
-        <li v-for="(item,index) in person" :key="index" @click="click(index)"
+        <li
+        v-for="(item, index) in person"
+        :key="index" 
+        is="myList"
+        :item="item"
+        @click.native="click(index)"
+        :class="{active:currentTab === index} ">
+        </li>
+        <!-- <li v-for="(item,index) in person" :key="index" @click="click(index)"
         :class="{active:currentTab === index} ">
           <div class="personList clearfix">
             <div class="person clearfix">
@@ -19,7 +27,7 @@
               <div class="text">已参训</div>
             </div>
           </div>
-        </li>
+        </li> -->  
       </ul>
       <router-link to="/">
         <div class="home"></div>
@@ -31,8 +39,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
+import myList from '../components/myList'
 
 export default {
+  name: 'series',
   data(){
     return{
       currentTab:'',
@@ -57,6 +67,7 @@ export default {
       ]
     }
   },
+  components:{myList},
   props:['city','province','area','series'],
   created(){
     console.log(this.province,this.city,this.area,this.series)
@@ -65,6 +76,7 @@ export default {
   methods:{
     click:function(index){
       this.currentTab = index
+
       let personName = this.person[index].name
       console.log(personName)
       //跳转下个页面，把当前点击的名字传下去。
@@ -139,48 +151,48 @@ export default {
 ul{
   width: 100vw;
   font-family: 'PINGFANG';
-  li{
-    height: 13.33vw;
-    width: 100%;
-    background: #f2f7fa;
-    .personList{
-      margin-left: 4vw;
-      height: 13.33vw;;
-      border-bottom: 1px solid #e7ecf2;
-      box-sizing: border-box;
-      position: relative;
-      .person{
-        float: left;
-        img{
-          width: 10.76vw;
-          position: absolute;
-          top: 1.33vw;
-        }
-        .name{
-          float: right;
-          font-size: 4.53vw;
-          line-height: 13.33vw;
-          color: #474a5f;
-          margin-left: 13.42vw;
-        }
-      }
-      .takepartin{
-        float: right;
-        img{
-          width: 3.73vw;
-          padding-top: 4.93vw;
-        }
-        .text{
-          float: right;
-          margin-right: 4vw;
-          margin-left: 1.6vw;
-          font-size: 3.73vw;
-          line-height: 13.33vw;
-          color: #bfc1c8;
-        }
-      }
-    }
-  }
+  // li{
+  //   height: 13.33vw;
+  //   width: 100%;
+  //   background: #f2f7fa;
+  //   .personList{
+  //     margin-left: 4vw;
+  //     height: 13.33vw;;
+  //     border-bottom: 1px solid #e7ecf2;
+  //     box-sizing: border-box;
+  //     position: relative;
+  //     .person{
+  //       float: left;
+  //       img{
+  //         width: 10.76vw;
+  //         position: absolute;
+  //         top: 1.33vw;
+  //       }
+  //       .name{
+  //         float: right;
+  //         font-size: 4.53vw;
+  //         line-height: 13.33vw;
+  //         color: #474a5f;
+  //         margin-left: 13.42vw;
+  //       }
+  //     }
+  //     .takepartin{
+  //       float: right;
+  //       img{
+  //         width: 3.73vw;
+  //         padding-top: 4.93vw;
+  //       }
+  //       .text{
+  //         float: right;
+  //         margin-right: 4vw;
+  //         margin-left: 1.6vw;
+  //         font-size: 3.73vw;
+  //         line-height: 13.33vw;
+  //         color: #bfc1c8;
+  //       }
+  //     }
+  //   }
+  // }
   .active{
     height: 13.33vw;
     width: 100%;
