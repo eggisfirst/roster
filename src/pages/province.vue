@@ -3,7 +3,7 @@
     <ul class="myCity">
        <div class="city">市</div>
        <div class="option">请选择</div>
-      <li v-for="(item1, index) in citys" :key="`${index}11`"
+      <li v-for="(item1, index) in citys" :key="`${index}`"
        @click="cityClick(index)" :class="{active1:cityTab === index}">
        {{item1}}
        </li>
@@ -11,7 +11,7 @@
      <ul class="myArea" :style="{display:displayArea}">
        <div class="city">地区</div>
        <div class="option">请选择</div>
-      <li v-for="(item2,index) in areas" :key="`${index}22`"
+      <li v-for="(item2,index) in areas" :key="`${index}`"
        @click="areaClick(index)" :class="{active2:areaTab === index}">
        {{item2}}
        </li>
@@ -19,7 +19,7 @@
     <ul class="mySeries" :style="{display:displaySeries}">
        <div class="city">系列</div>
        <div class="option">请选择</div>
-      <li v-for="(item3,index) in allseries" :key="`${index}33`"
+      <li v-for="(item3,index) in allseries" :key="`${index}`"
        @click="seriesClick(index)" :class="{active3:seriesTab === index}">
        {{item3}}
        </li>
@@ -35,14 +35,15 @@ import axios from 'axios'
 export default {
   data(){
     return{
-      citys:['东莞市', '广州市', '深圳市', '珠海市', '汕头市', '韶关市', '肇庆市', '湛江市'],
-      areas:['南城区' ,'厚街区' ,'东城区' ,'万江区' ,'虎门镇'],
-      allseries:['3D', '凯奇', '歌蒂亚', '0769', 'V6'],
+      citys:[],
+      areas:[],
+      allseries:[],
       cityTab:'',
       areaTab:'',
       seriesTab:'',
       displayArea:'none',
-      displaySeries:'none'
+      displaySeries:'none',
+      i:''
     }
   },
   props:['province'],
@@ -56,23 +57,23 @@ export default {
     cityClick:function(index){
     //  console.log(this.p[index].city)
      let currentCity = this.citys[index]
-     console.log(currentCity) 
      this.cityTab = index  //获取当前索引，添加active样式。
-     this.getArea()
+     this.getArea(index)
      this.displayArea = 'block'
      this.$emit('City',currentCity)
+     this.i = index
     },
     //根据地区获得系列
     areaClick:function(index){
-      console.log(this.areas[index])
+      // console.log(this.areas[index])
       this.areaTab = index
       this.displaySeries = 'block'
       let currentArea = this.areas[index]
-      this.getSeries()
+      this.getSeries(index)
       this.$emit('Area',currentArea)
     },
     seriesClick:function(index){
-      console.log(this.allseries[index])
+      // console.log(this.allseries[index])
       let currentSeries = this.allseries[index]
       this.seriesTab = index
       this.$emit('Series',currentSeries)
@@ -86,46 +87,54 @@ export default {
         method:'post',
         url:url,
         params:{
-          province:"上海"
+          province
         }
       }).then((res) => {
         if(res.data){
-          console.log(res.data)
+          // console.log(res.data.data)
+          this.citys = res.data.data
         }
       })
     },
-    getArea:function(){
-      // let url = ''
-      // let province = this.province 
-      // axios({
-      //   method:'post',
-      //   url:url,
-      //   params:{
-            //  province,
-      //     city:currentCity
-      //   }
-      // }).then((res) => {
-      //   if(res.data){
-      //     console.log(res.data)
-      //   }
-      // })
+    getArea:function(index){
+      // console.log(this.citys[index])
+      let url = 'http://10.12.0.51/derucci/workflow/roster/get_area_bycity.jsp'
+      let province = this.province 
+      axios({
+        method:'post',
+        url:url,
+        params:{
+          province,
+          city:this.citys[index]
+        }
+      }).then((res) => {
+        if(res.data){
+          // console.log(res.data)
+          this.areas = res.data.data
+        }
+      })
     },
-    getSeries:function(){
-      // let url = ''
-      // let province = this.province 
-      // axios({
-      //   method:'post',
-      //   url:url,
-      //   params:{
-            //  province,
-            //  city:currentCity,
-      //     area:currentArea
-      //   }
-      // }).then((res) => {
-      //   if(res.data){
-      //     console.log(res.data)
-      //   }
-      // })
+    //获取系列的时候index跟点击城市的index不同。
+    getSeries:function(index){
+      let url = 'http://10.12.0.51/derucci/workflow/roster/getxl_byParam.jsp'
+      let province = this.province 
+      console.log(province,this.citys[this.i],this.areas[index])
+      axios({
+        method:'post',
+        url:url,
+        params:{
+          province,
+          city:this.citys[this.i],
+          area:this.areas[index]
+        }
+      }).then((res) => {
+        if(res.data){
+          // console.log(res.data.data)
+          var data = res.data.data[0]
+          var myData = data.split(',')
+          this.allseries = myData
+        }
+      })
     }
   }
 }
@@ -157,12 +166,10 @@ ul{
     border: 1px solid #e7ecf2;
   }
   li{
-    height: 10.66vw;
     border: 1px solid #e7ecf2;
     border-top: none; 
   }
   .active1{
-    height: 10.66vw;
     border-bottom: 1px solid #e7ecf2;
     border-right: none;
     border-top: none;
@@ -180,7 +187,6 @@ ul{
     border-left: none;
   }
 .active2{
-    height: 10.66vw;
     border-bottom: 1px solid #e7ecf2;
     border-right: none;
     border-top: none;
@@ -199,7 +205,6 @@ ul{
     border-left: none;
   }
   .active3{
-    height: 10.66vw;
     border-bottom: 1px solid #e7ecf2;
     border-right: none;
     border-top: none;

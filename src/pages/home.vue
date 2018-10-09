@@ -15,8 +15,10 @@
         <ul class="clearfix">         
           <li v-for="(item,index) in personForms " :key="index"
           @click="linkToProvince(index)">
+            
             <div class="areaPeopleNumber">{{item.areaPeopleNumber}}</div>
-            <div class="province">{{item.province}}</div>    
+            <div class="province">{{item.province}}</div> 
+              
           </li>
         </ul>
       </div>
@@ -64,7 +66,7 @@ export default {
     //点击哪个省份，通过路由传到下个页面。
     linkToProvince:function(index){
       let myProvince = this.personForms[index].province 
-      console.log(myProvince)
+      // console.log(myProvince)
       this.$emit('Province',myProvince)
       this.$router.push({path:'/province'})
     }
@@ -138,7 +140,6 @@ export default {
       font-family: 'PINGFANGBOLD';
     }
     ul{
-      
       li{
         width: 21.3vw;
         height: 21.3vw;
@@ -149,18 +150,20 @@ export default {
         float: left;
         margin-right: 1.56vw;
         margin-bottom: 1.56vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        line-height: 6.4vw;
+        text-align: center;
         .areaPeopleNumber{
           font-size: 5.6vw;
-          line-height: 6vw;
           color: #7498fb;
           font-family: 'PINGFANGBOLD';
-          text-align: center;
-          margin-top: 3.86vw;
         }
-        .province{
+        .province{ 
           font-size: 4.8vw;
-          color: #bfc1c8;
-          text-align: center;
+          color: #bfc1c8; 
         }
       }
       li:nth-child(4n){

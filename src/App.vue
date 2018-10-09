@@ -4,7 +4,7 @@
      v-on:City= "getCity"  :city ='city'
      v-on:Area= 'getArea'  :area='area'
      v-on:Series= 'getSeries' :series ='series'
-     v-on:personName= 'getName' :personName ='personName'>
+     v-on:details= 'getName' :details ='details'>
     </router-view>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default{
       city:'',
       area:'',
       series:'',
-      personName:''
+      details:''
     }
   },
  
@@ -42,7 +42,7 @@ export default{
       this.series = data
     },
     getName(data){
-      this.personName = data
+      this.details = data
     }
   }
 }

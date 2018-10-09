@@ -3,7 +3,7 @@
     <div class="banner">
       <div class="location-icon"></div>
       <div class="location">
-        {{province}}省&nbsp;{{city}}&nbsp;{{area}}
+        {{province}}&nbsp;{{city}}&nbsp;{{area}}
       </div>
     </div>
       <ul>
@@ -46,25 +46,9 @@ export default {
   data(){
     return{
       currentTab:'',
-      person:[
-        {sex:1,name:'陈一'},
-        {sex:1,name:'张三'},
-        {sex:1,name:'李四'},
-        {sex:2,name:'魏五'},
-        {sex:2,name:'陈二'},
-        {sex:2,name:'张六'},
-        {sex:1,name:'陈一'},
-        {sex:1,name:'张三'},
-        {sex:1,name:'李四'},
-        {sex:2,name:'魏五'},
-        {sex:2,name:'陈二'},
-        {sex:2,name:'张六'},
-        {sex:1,name:'张三'},
-        {sex:1,name:'李四'},
-        {sex:2,name:'魏五'},
-        {sex:2,name:'陈二'},
-        {sex:2,name:'张六'}
-      ]
+      person:[],
+      details:{name:'',id:''}
+     
     }
   },
   components:{myList},
@@ -72,19 +56,19 @@ export default {
   created(){
     console.log(this.province,this.city,this.area,this.series)
     document.title = this.series + '系列花名册'
+    this.getPreson()
   },
   methods:{
     click:function(index){
       this.currentTab = index
-
-      let personName = this.person[index].name
-      console.log(personName)
+      this.details.name = this.person[index].name
+      this.details.id = this.person[index].id
       //跳转下个页面，把当前点击的名字传下去。
-      this.$emit('personName',personName)
+      this.$emit('details',this.details)
       this.$router.push({path:'/personalDetails'})
     },
-    getPreson:() => {
-      let url = ''
+    getPreson(){
+      let url = 'http://10.12.0.51/derucci/workflow/roster/get_roster_param.jsp'
       let province = this.province
       let city = this.city
       let area = this.area
@@ -100,7 +84,9 @@ export default {
         }
       }).then((res) => {
         if(res.data){
-          console.log(res.data)
+          // console.log(res.data.person[0].id)
+          this.person = res.data.person
+          
           //返回数据  总人数 性别（男返回1，女返回2） 名字（排序按姓名首字母排）
         }
       })
