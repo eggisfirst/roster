@@ -113,10 +113,6 @@ export default {
     background-size: 100%;
     font-size: 4.26vw;
     color: #484a5f;
-    border-width: 1px;
-    border-image-source: linear-gradient(0, #fafbfb 92%, #ffffff 100%);
-    border-image-slice: 1;
-    border-radius: 2vw;
     p{
       font-size: 3.73vw;
       line-height: 15vw;
@@ -148,7 +144,7 @@ export default {
         border: solid 1px #f5f8fb;
         border-radius: 2vw;
         float: left;
-        margin-right: 1.56vw;
+        margin-right: 1.5vw;
         margin-bottom: 1.56vw;
         display: flex;
         justify-content: center;

@@ -4,7 +4,7 @@
        <div class="city">市</div>
        <div class="option">请选择</div>
       <li v-for="(item1, index) in citys" :key="`${index}`"
-       @click="cityClick(index)" :class="{active1:cityTab === index}">
+       @click="cityClick(index)" :class="{active1: cityClass[index]}">
        {{item1}}
        </li>
     </ul>
@@ -43,20 +43,29 @@ export default {
       seriesTab:'',
       displayArea:'none',
       displaySeries:'none',
-      i:''
+      i:'',
+      setCity:[],
+      citysSelect:'',
+      cityClass: []
     }
   },
   props:['province'],
   created(){
     this.getCity()
+    this.getAccountMsgCity()
     document.title = this.province
     // console.log('this',this.province)
   },
   methods:{
     //根据城市获得地区
     cityClick:function(index){
+      for (let key in this.cityClass) {
+        this.cityClass[key] = false
+      }
+      this.cityClass[index] = true
     //  console.log(this.p[index].city)
      let currentCity = this.citys[index]
+     this.setAccountMsgCity(this.citys,index)
      this.cityTab = index  //获取当前索引，添加active样式。
      this.getArea(index)
      this.displayArea = 'block'
@@ -69,6 +78,7 @@ export default {
       this.areaTab = index
       this.displaySeries = 'block'
       let currentArea = this.areas[index]
+      // this.setAccountMsg(currentArea)
       this.getSeries(index)
       this.$emit('Area',currentArea)
     },
@@ -93,6 +103,9 @@ export default {
         if(res.data){
           // console.log(res.data.data)
           this.citys = res.data.data
+          if (this.citys) {
+            this.cityClass.length = this.citys.length
+          }
         }
       })
     },
@@ -135,6 +148,24 @@ export default {
           this.allseries = myData
         }
       })
+    },
+    //设置cookie
+    setAccountMsgCity(citys,index){
+      let string = `{"citys":"${citys}","index":"${index}"}`
+      sessionStorage.setItem('accountMsgCity',string)
+    },
+    //读取cookie
+    getAccountMsgCity(){
+      let accountMsgCity = sessionStorage.getItem('accountMsgCity')
+      let accountMsgCitys = JSON.parse(accountMsgCity)
+      if(accountMsgCitys){
+        //  console.log('city',accountMsgCitys.citys)
+         this.setCity = accountMsgCitys
+         console.log(this.setCity['index'])
+        this.cityClass[this.setCity['index']] = true
+         
+      }
+     
     }
   }
 }
@@ -150,20 +181,26 @@ export default {
   src: url('../assets/font/PingFang Bold.ttf');
 }
 ul{
+  height: 100vh;
+  overflow-x: hidden;
   width: 29.3vw;
   text-align: center;
   line-height: 10.66vw;
   color: #474a5f;
   font-size: 4.53vw;
   float: left;
+  position: relative;
   .city{
     font-family: 'PINGFANGBOLD';
     background: #edf3f8;
     font-weight: bold;
+    position: fixed;
+    width: 29.3vw;
   }
   .option{
     background: #fff;
     border: 1px solid #e7ecf2;
+    margin-top: 10vw;
   }
   li{
     border: 1px solid #e7ecf2;
@@ -199,6 +236,9 @@ ul{
   width: 41.33vw;
   .option{
     border-left: none;
+  }
+  .city{
+    width: 41.5vw;
   }
   li{
     background: #f1f6fa;

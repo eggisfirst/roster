@@ -2,7 +2,7 @@
   <li>
     <div class="personList clearfix">
       <div class="person clearfix">
-        <img :src="`../static/images/man${item.sex}.png`" alt="">
+        <img :src="`./static/images/man${item.sex}.png`" alt="">
         <div class="name">{{item.name}}</div>
       </div>
       <div class="takepartin clearfix">
