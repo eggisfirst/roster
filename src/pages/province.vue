@@ -48,7 +48,7 @@ export default {
   props:['province'],
   created(){
     this.getCity()
-    document.title = this.province + '省'
+    document.title = this.province
     // console.log('this',this.province)
   },
   methods:{
@@ -80,19 +80,19 @@ export default {
     },
     //根据省份获得城市
     getCity:function(){
-      let url = ''
+      let url = 'http://10.12.0.51/derucci/workflow/roster/getcity_byPro.jsp'
       let province = this.province 
-      // axios({
-      //   method:'post',
-      //   url:url,
-      //   params:{
-      //     province
-      //   }
-      // }).then((res) => {
-      //   if(res.data){
-      //     console.log(res.data)
-      //   }
-      // })
+      axios({
+        method:'post',
+        url:url,
+        params:{
+          province:"上海"
+        }
+      }).then((res) => {
+        if(res.data){
+          console.log(res.data)
+        }
+      })
     },
     getArea:function(){
       // let url = ''

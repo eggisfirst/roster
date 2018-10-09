@@ -8,12 +8,12 @@
       </div>
       <div class="peopelNum">
         <p>目前全国慕思持有上岗证人员共有</p>
-        <span>{{peopleNum}}</span>名
+        <span>{{allPersonNum}}</span>名
       </div>
       <div class="areaPeopleNum">
         <p>各省持证人数分布</p>
         <ul class="clearfix">         
-          <li v-for="(item,index) in peopleForms " :key="index"
+          <li v-for="(item,index) in personForms " :key="index"
           @click="linkToProvince(index)">
             <div class="areaPeopleNumber">{{item.areaPeopleNumber}}</div>
             <div class="province">{{item.province}}</div>    
@@ -32,27 +32,16 @@ import axios from 'axios'
 export default {
   data(){
     return{
-      peopleNum:4353,
-      peopleForms:[
-        {
-          areaPeopleNumber:1663,province:'广东'
-        },{
-          areaPeopleNumber:554,province:'广西'
-        },{
-          areaPeopleNumber:444,province:'湖南'
-        },{
-          areaPeopleNumber:333,province:'湖北'
-        },{
-          areaPeopleNumber:1663,province:'广东'
-        },{
-          areaPeopleNumber:554,province:'广西'
-        }
-      ]
+      allPersonNum: '',
+      personForms:[]
     }
   },
+  created(){
+    this.getPeopelNum()
+  },
   methods: {
-    getPeopelNum:() => {
-      const url = ''  //接口
+    getPeopelNum() {
+      const url = 'http://10.12.0.51/derucci/workflow/roster/get_alltrosters.jsp'  //接口
       axios({
         method:'post',
         url:url,
@@ -60,37 +49,25 @@ export default {
 
         }//接口参数
       }).then((res) => {
+        console.log()
         if(res.data){
-          console.log(res.data)
+          // console.log(res.data)
+          this.allPersonNum = res.data.allPersonNum
+          this.personForms = res.data.personForms
+          console.log(this.personForms)
         }
+      }).catch((error) => {
+        console.log(error)
       })
     },
-    // getAreaPeopleNum:() => {
-    //   const url = ''
-    //   axios({
-    //     method:'post',
-    //     url:url,
-    //     params:{
-
-    //     }
-    //   }).then((res) => {
-    //     if(res.data){
-    //       console.log(res.data)
-    //     }
-    //   })
-    // },
+   
     //点击哪个省份，通过路由传到下个页面。
     linkToProvince:function(index){
-      let myProvince = this.peopleForms[index].province
+      let myProvince = this.personForms[index].province 
       console.log(myProvince)
       this.$emit('Province',myProvince)
       this.$router.push({path:'/province'})
     }
-  },
-  created(){
-    // this.getPeopelNum()
-    // this.getAreaPeopleNum()
-   
   }
 }
 </script>
