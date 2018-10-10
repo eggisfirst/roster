@@ -65,6 +65,7 @@ export default {
    
     //点击哪个省份，通过路由传到下个页面。
     linkToProvince:function(index){
+      sessionStorage.clear()
       let myProvince = this.personForms[index].province 
       // console.log(myProvince)
       this.$emit('Province',myProvince)
