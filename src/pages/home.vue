@@ -56,7 +56,7 @@ export default {
           // console.log(res.data)
           this.allPersonNum = res.data.allPersonNum
           this.personForms = res.data.personForms
-          console.log(this.personForms)
+          // console.log(this.personForms)
         }
       }).catch((error) => {
         console.log(error)
@@ -86,7 +86,6 @@ export default {
 }
 .wrapper{
   width: 100vw;
-  height: 100vh;
   padding: 4.94vw 4vw ;
   box-sizing: border-box;
   font-family: 'PINGFANG';

@@ -3,7 +3,7 @@
     <div class="banner">
       <div class="location-icon"></div>
       <div class="location">
-        {{province}}&nbsp;{{city}}&nbsp;{{area}}
+        {{province}}&nbsp;{{city}}&nbsp;{{this.myarea}}
       </div>
     </div>
       <ul>
@@ -34,7 +34,8 @@ export default {
     return{
       currentTab:'',
       person:[],
-      details:{name:'',id:''}
+      details:{name:'',id:''},
+      myarea:''
      
     }
   },
@@ -42,6 +43,10 @@ export default {
   props:['city','province','area','series'],
   created(){
     console.log(this.province,this.city,this.area,this.series)
+    this.myarea = this.area
+    if(this.area == this.city){
+      this.myarea = undefined
+    }
     document.title = this.series + '系列花名册'
     this.getPreson()
   },
@@ -56,10 +61,15 @@ export default {
     },
     getPreson(){
       let url = 'http://10.12.0.51/derucci/workflow/roster/get_roster_param.jsp'
+     
       let province = this.province
       let city = this.city
       let area = this.area
+      if(city == area){
+        area = undefined
+      }
       let series = this.series
+      
       axios({
         method:'post',
         url:url,

@@ -5,23 +5,26 @@
        <div class="option">请选择</div>
       <li v-for="(item1, index) in citys" :key="`${index}`"
        @click="cityClick(index)" :class="{active1: cityClass[index]}">
-       {{item1}}
+       {{item1.city}}
+       <span class="cityNum">{{item1.number}}</span>
        </li>
     </ul>
      <ul class="myArea" :style="{display:displayArea}">
        <div class="city">地区</div>
        <div class="option">请选择</div>
       <li v-for="(item2,index) in areas" :key="`${index}`"
-       @click="areaClick(index)" :class="{active2:areaClass[index]}">
-       {{item2}}
+       @click.stop="areaClick(index)" :class="{active2:areaClass[index]}">
+       {{item2.area}}
+       <span class="cityNum">{{item2.number}}</span>
        </li>
     </ul>
     <ul class="mySeries" :style="{display:displaySeries}">
        <div class="city">系列</div>
        <div class="option">请选择</div>
       <li v-for="(item3,index) in allseries" :key="`${index}`"
-       @click="seriesClick(index)" :class="{active3:seriesClass[index]}">
+       @click.stop="seriesClick(index)" :class="{active3:seriesClass[index]}">
        {{item3}}
+       <span class="cityNum">{{seriesNum[index]}}</span>
        </li>
     </ul>
   </div>
@@ -38,6 +41,7 @@ export default {
       citys:[],
       areas:[],
       allseries:[],
+      seriesNum:[],
       displayArea:'none',
       displaySeries:'none',
       i:'',
@@ -50,45 +54,78 @@ export default {
   },
   props:['province'],
   created(){ 
+    this.setProvince = this.province
+    console.log(this.setProvince)
     this.getCity()
-    this.getAccountMsgCity()
-    this.getAccountMsgArea()
-    this.getAccountMsgSeries()
+    
+    // this.getAccountMsgCity()
+    // this.getAccountMsgArea()
+    // this.getAccountMsgSeries()
     document.title = this.province
     // console.log('this',this.province)
+    
   },
   methods:{
     //根据城市获得地区
+    // getIndex:function(str,data){
+    //   let index = -1;
+    //   for (let i = 0; i < data.length; i ++){
+    //     if (str == data[i].name) {
+    //       index = i
+    //     }
+    //   }
+    //   return index
+    //   // data[getIndex['南京',data].city]
+    // },
     cityClick:function(index){
       //for循环，每个li的class恢复原始值
       for(let key in this.cityClass){
         this.cityClass[key] = false
       }
+      console.log('点击获取的citys',this.cityClass,index)
       //选中的index的li的class为active
-     this.cityClass[index] = true
-     this.setAccountMsgCity(this.citys,index)
+      this.cityClass[index] = true
+      for(let key in this.areaClass){
+        this.areaClass[key] = false
+      }
+     
      this.setAccountMsgArea("","")
      this.setAccountMsgSeries('','')
-     this.getAccountMsgArea()
      this.allseries = []
+     
+     this.setAccountMsgCity(this.citys[index].city,index)
      this.getArea(index)
      this.displayArea = 'block'
-     this.$emit('City',this.citys[index])
+
+     this.$emit('City',this.citys[index].city)
      this.i = index
+     console.log('i',this.i)
     },
     //根据地区获得系列
     areaClick:function(index){
+      console.log('地区点击事件', index)
       // console.log(this.areas[index])
-      for (let key in this.areaClass) {
-        this.areaClass[key] = false
+      for (var i = 0; i < this.areaClass.length; i ++) {
+        this.areaClass[i] = false
       }
       this.areaClass[index] = true
+      console.log(888888,this.areaClass,index)
+
+
+      for(let key in this.seriesClass){
+        this.seriesClass[key] = false
+      }
+
+     
+      this.setAccountMsgArea(this.areas[index].area,index)
+      
       this.displaySeries = 'block'
-      this.setAccountMsgArea(this.areas,index)
+      
+      
       this.setAccountMsgSeries('','')
-      this.getAccountMsgSeries()
+      // this.getAccountMsgSeries()
       this.getSeries(index)
-      this.$emit('Area',this.areas[index])
+      this.$emit('Area',this.areas[index].area)
     },
     seriesClick:function(index){
       for (let key in this.seriesClass) {
@@ -96,14 +133,15 @@ export default {
       }
       this.seriesClass[index] = true
       this.setAccountMsgSeries(this.allseries,index)
-      // console.log(this.allseries[index])
+     
+     
       this.$emit('Series',this.allseries[index])
       this.$router.push({path:'/series'})
     },
     //根据省份获得城市
     getCity:function(){
       let url = 'http://10.12.0.51/derucci/workflow/roster/getcity_byPro.jsp'
-      let province = this.province 
+      let province = this.setProvince 
       axios({
         method:'post',
         url:url,
@@ -111,10 +149,16 @@ export default {
           province
         }
       }).then((res) => {
+        // console.log(9999, this)
         if(res.data){   
           // console.log(res.data.data)
           this.citys = res.data.data
+          this.getAccountMsgCity()
+          this.getAccountMsgArea()
+          this.getAccountMsgSeries()
+          // console.log('first get this.citys',this.citys)
           if (this.citys) {
+            // console.log('get length',this.citys.length)
             this.cityClass.length = this.citys.length
           }
         }
@@ -123,21 +167,26 @@ export default {
       })
     },
     getArea:function(index){
+      console.log('areaIndex', index)
       // console.log(this.citys[index])
       let url = 'http://10.12.0.51/derucci/workflow/roster/get_area_bycity.jsp'
       let province = this.province 
+      // console.log('this.citys',this.citys[index].city)
       axios({
         method:'post',
         url:url,
         params:{
           province,
-          city:this.citys[index]
+          city:this.citys[index].city
         }
       }).then((res) => {
+        // console.log('result', res)
+        // console.log('res',res.data.data)
         if(res.data){ 
           this.areas = res.data.data
           if (this.areas){
             this.areaClass.length = this.areas.length
+            console.log('更改areaclass1')
           }
         }
       }).catch(function(err){
@@ -146,32 +195,66 @@ export default {
     },
     //获取系列的时候index跟点击城市的index不同。
     getSeries:function(index){
+      console.log('点击事件')
       let url = 'http://10.12.0.51/derucci/workflow/roster/getxl_byParam.jsp'
       let province = this.province 
       var cityindex;
       //从列表点击进来的index为this.i,后退后点击的index为缓存所获得的index
-      if(this.i){
-        cityindex = this.i
+      // console.log('this i',this.i,'this.index',this.citys)
+      let temp = JSON.parse(sessionStorage.getItem('accountMsgCity')).index
+      console.log('temp',temp,this.i)
+      var cityindex;
+      var areaSeries;
+      if(temp){
+        cityindex = temp
       }else{
-        cityindex = this.cityIndex
+        cityindex = this.i
       }
-      console.log(province,this.citys[cityindex],this.areas[index])
+      let tempArea = JSON.parse(sessionStorage.getItem('accountMsgArea')).areas
+         areaSeries = tempArea
+      
+      // console.log('this.areas',this.areas)
+      // console.log('this.city',this.citys,'this.index',cityindex)
+      var citySeries = this.citys[cityindex].city
+      //当市跟区一样的时候，区为空
+      if(citySeries == areaSeries){
+        areaSeries = undefined
+      }
       axios({
         method:'post',
         url:url,
         params:{
           province,
-          city:this.citys[cityindex],
-          area:this.areas[index]
+          city:citySeries,
+          area:areaSeries
         }
       }).then((res) => {
+        // console.log(12324434,res)
         if(res.data){
-          // console.log(res.data.data)
-          var data = res.data.data[0]
-          var myData = data.split(',')
-          this.allseries = myData
+          // console.log(99999,res.data.data[0])  
+          var data = res.data.data
+          var temp = []
+          var tempSeries;
+          var tempNum;
+          var myNum = [];
+          var tempseries = {};
+          var myData = []
+          var myLength = data.length
+         for (var i = 0; i < myLength; i ++){ 
+            temp = data[i].split('_')
+            tempSeries = temp[0]
+            tempNum = temp[1]
+            myNum += tempNum + ","
+            this.seriesNum = myNum.split(',')
+            tempseries = tempSeries
+            myData += tempseries + ','
+            var allData = myData.split(',')
+          }
+          this.allseries = allData
           if (this.allseries){
+           
             this.seriesClass.length = this.allseries.length
+
           } 
         }
       }).catch(function(err){
@@ -187,35 +270,54 @@ export default {
     getAccountMsgCity(){
       let accountMsgCity = sessionStorage.getItem('accountMsgCity')
       let accountMsgCitys = JSON.parse(accountMsgCity)
+      // console.log('yes',accountMsgCity,accountMsgCitys)
       if(accountMsgCitys){
         if(accountMsgCitys.citys){
           this.cityIndex = accountMsgCitys.index
-          this.citys = accountMsgCitys.citys.split(',')
           this.displayCity = 'block'
           this.cityClass[this.cityIndex] = true  
+          //当点击市的时候缓存区
+          this.displayArea = 'block'
+          this.getArea(this.cityIndex)
+          //  for(let key in this.areaClass){
+          //   this.areaClass[key] = false
+          // }
         }
+      }else{
+        console.log('getCityFail',accountMsgCity)
       } 
     },
     //设置地区cookie
      setAccountMsgArea(areas,index){
+       
       let stringArea = `{"areas":"${areas}","index":"${index}"}`
       sessionStorage.setItem('accountMsgArea',stringArea)
     },
     //读取地区cookie
      getAccountMsgArea(){
+      console.log('修改了areaclass')
       let accountMsgArea = sessionStorage.getItem('accountMsgArea')
       let accountMsgAreas = JSON.parse(accountMsgArea)
+    
+
       if(accountMsgAreas){
         if(accountMsgAreas.areas){
-          let areaIndex = accountMsgAreas.index
-          this.areas = accountMsgAreas.areas.split(',')
+          var areaIndex = accountMsgAreas.index
+          // console.log('this.areas',this.accountMsgAreas.areas,'areaindex',areaIndex)
           this.displayArea = 'block'
-          this.areaClass[areaIndex] = true  
+
+          this.areaClass[areaIndex] = true
+          console.log('更改areaclass2')
+
+          this.displaySeries = 'block'
+          this.getSeries(areaIndex)
+
         }else{
           //清除active样式
-          for(let key in this.areaClass){
-            this.areaClass[key] = false
-          }
+          console.log('loss')
+          // for(let key in this.areaClass){
+          //   this.areaClass[key] = false
+          // }
         } 
       }
     },
@@ -228,16 +330,17 @@ export default {
      getAccountMsgSeries(){
       let accountMsgSeries = sessionStorage.getItem('accountMsgSeries')
       let accountMsgSeriess = JSON.parse(accountMsgSeries)
+      console.log(111,accountMsgSeries,2222,accountMsgSeriess)
       if(accountMsgSeriess){
-        console.log('yes')
         if(accountMsgSeriess.series){
           console.log('you',accountMsgSeriess.series)
           let seriesIndex = accountMsgSeriess.index
           this.allseries = accountMsgSeriess.series.split(',')
           this.displaySeries = 'block'
           this.seriesClass[seriesIndex] = true  
+
         }else{
-          console.log('meiyou')
+          // console.log('meiyou')
            for (let key in this.seriesClass) {
            this.seriesClass[key] = false
       }
@@ -272,6 +375,9 @@ ul{
   font-size: 4.53vw;
   float: left;
   position: relative;
+  .cityNum{
+    color: #fc807e
+  }
   .city{
     font-family: 'PINGFANGBOLD';
     background: #edf3f8;
