@@ -60,7 +60,7 @@ export default {
       this.$router.push({path:'/personalDetails'})
     },
     getPreson(){
-      let url = 'http://10.12.0.51/derucci/workflow/roster/get_roster_param.jsp'
+      let url = 'http://10.12.0.54/derucci/workflow/roster/get_roster_param.jsp'
      
       let province = this.province
       let city = this.city

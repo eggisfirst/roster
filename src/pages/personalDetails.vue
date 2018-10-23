@@ -51,7 +51,7 @@ export default {
   methods:{
     getDetails(){
       let id = this.details.id
-      let url = 'http://10.12.0.51/derucci/workflow/roster/getroster_byId.jsp'
+      let url = 'http://10.12.0.54/derucci/workflow/roster/getroster_byId.jsp'
       axios({
         method:'post',
         url:url,

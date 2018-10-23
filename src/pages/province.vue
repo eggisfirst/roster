@@ -140,7 +140,7 @@ export default {
     },
     //根据省份获得城市
     getCity:function(){
-      let url = 'http://10.12.0.51/derucci/workflow/roster/getcity_byPro.jsp'
+      let url = 'http://10.12.0.54/derucci/workflow/roster/getcity_byPro.jsp'
       let province = this.setProvince 
       axios({
         method:'post',
@@ -169,7 +169,7 @@ export default {
     getArea:function(index){
       console.log('areaIndex', index)
       // console.log(this.citys[index])
-      let url = 'http://10.12.0.51/derucci/workflow/roster/get_area_bycity.jsp'
+      let url = 'http://10.12.0.54/derucci/workflow/roster/get_area_bycity.jsp'
       let province = this.province 
       // console.log('this.citys',this.citys[index].city)
       axios({
@@ -196,7 +196,7 @@ export default {
     //获取系列的时候index跟点击城市的index不同。
     getSeries:function(index){
       console.log('点击事件')
-      let url = 'http://10.12.0.51/derucci/workflow/roster/getxl_byParam.jsp'
+      let url = 'http://10.12.0.54/derucci/workflow/roster/getxl_byParam.jsp'
       let province = this.province 
       var cityindex;
       //从列表点击进来的index为this.i,后退后点击的index为缓存所获得的index
