@@ -5,7 +5,7 @@
       <li v-for="(item,index) in personDetails" :key="index">
         <div class="line">
           <div class="left"><span>{{item.topic}}</span></div>
-          <div class="right">{{item.message}}</div>
+          <div class="right"><span>{{item.message}}</span></div>
         </div>
       </li>
     </ul>
@@ -51,7 +51,7 @@ export default {
   methods:{
     getDetails(){
       let id = this.details.id
-      let url = 'http://10.12.0.54/derucci/workflow/roster/getroster_byId.jsp'
+      let url = '/derucci/workflow/roster/getroster_byId.jsp'
       axios({
         method:'post',
         url:url,
@@ -106,20 +106,20 @@ export default {
         height: 100%;
         box-sizing: border-box;
         margin-left:4vw; 
+        display: flex;
+        align-items: center;
         .left{
-          display: flex;
-          align-items: center;
+          flex:1.4;
           font-size: 4.53vw;
-          height: 13.33vw;
           color: #474a5f;
-          width: 54vw;
-          line-height: 4.8vw;
         }
         .right{
+          flex: 1;
           font-size: 3.73vw;
-          line-height: 13.33vw;
+          margin-right: 2vw;
           color: #afb0b9;
-          margin-right: 4vw;
+          
+          text-align: right;
         }
       }
     }

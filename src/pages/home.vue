@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     getPeopelNum() {
-      const url = 'http://10.12.0.54/derucci/workflow/roster/get_alltrosters.jsp'  //接口
+      const url = '/derucci/workflow/roster/get_alltrosters.jsp'  //接口
       axios({
         method:'post',
         url:url,
